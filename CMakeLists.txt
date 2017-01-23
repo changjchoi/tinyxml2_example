@@ -8,10 +8,12 @@ set(EXTERNAL_INSTALL_LOCATION ${PROJECT_SOURCE_DIR})
 # GIT_TAG release-1.8.0                                                        
 # CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}               
 #)
-ExternalProject_Add(tinyxml2                                                     
+ExternalProject_Add(tinyxml2p                                                     
   GIT_REPOSITORY https://github.com/leethomason/tinyxml2.git                   
   GIT_TAG 4.0.1                                                                
-  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION}               
+  CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${EXTERNAL_INSTALL_LOCATION} 
+    -DBUILD_STATIC_LIBS=ON
+    -DBUILD_SHARED_LIBS=OFF
 )
 ## Order problem?? include path, link directory and then executable
 ## and link library
@@ -25,6 +27,7 @@ link_directories(
 add_executable(make_xml 
   src/make_xml.cc
 )
+#set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
 #find_library(tinyxml2 
 #  HINTS ${PROJECT_SOURCE_DIR}/lib
 #) 
@@ -38,6 +41,6 @@ add_executable(make_xml
 #endif (TINYXML2_FOUND)
 ## tinyxml2 is not working .... why
 target_link_libraries(make_xml 
-  libtinyxml2.dylib
+  tinyxml2
 )
-add_dependencies(make_xml tinyxml2)
+add_dependencies(make_xml tinyxml2p)
